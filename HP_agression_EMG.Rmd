@@ -1,0 +1,39 @@
+---
+title: "HP aggression plot"
+author: "MSCI 599"
+output: html_document
+---
+
+### Demonstrate changing a repo forked from someone else's GitHub account
+
+* We forked the Harry-Potter-aggression repo from GitHub user andrewheiss
+* We cloned our version of the repo to our local computer and put it in a version-controled RStudio project
+* We can add files, make changes, etc., and push them back to our GitHub repo
+
+### Work with the HP data
+
+Load packages and data
+```{r, include = FALSE}
+library(tidyverse)
+hp_data = read_csv("harry_potter_aggression_full.csv")
+```
+
+Filter out all characters except Harry and Malfoy, and plot their aggressions per book:
+
+```{r}
+hp_simple = hp_data %>% 
+  filter(Name == "Harry" | Name == "Draco Malfoy") %>% 
+  select(Name, book, agg.per.mention)
+
+ggplot(aes(x = book, y = agg.per.mention), data = hp_simple) +
+  geom_col(aes(fill = Name), position = "dodge") +
+  coord_flip() +
+  labs(x = "", y = "Aggressions per mention") +
+  theme_bw() +
+  scale_y_continuous(expand = c(0,0))
+```
+
+### Acknowledgements
+
+From Allison Horst's GitHub tutorial:
+https://github.com/allisonhorst/esm-206-2018/tree/master/week_6
